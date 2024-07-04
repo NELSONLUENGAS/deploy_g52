@@ -1,3 +1,7 @@
+import { useContext } from 'react';
+import { MarketplaceContext } from '../context/MarketplaceProvider';
+
 export const Login = () => {
-	return <div>Login</div>;
+	const { logIn } = useContext(MarketplaceContext);
+	return <button onClick={() => logIn()}>Log In</button>;
 };

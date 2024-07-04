@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { MarketplaceProvider } from './context/MarketplaceProvider.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<App />
+		<MarketplaceProvider>
+			<App />
+		</MarketplaceProvider>
 	</React.StrictMode>
 );
