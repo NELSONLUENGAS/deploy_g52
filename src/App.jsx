@@ -1,5 +1,5 @@
 import './App.css';
-import { RouterLink } from './router/Router';
+import { RouterLink } from './Router/Router';
 
 function App() {
 	return (
