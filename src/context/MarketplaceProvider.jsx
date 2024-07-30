@@ -33,10 +33,30 @@ export const MarketplaceProvider = ({ children }) => {
 		return token;
 	};
 
+	const getProfile = async (token) => {
+		const userData = await axios.get(
+			`${VITE_SERVER_URL_LOCAL}/api/users/perfil`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		const { user } = userData.data;
+		return user;
+	};
+
 	const logOut = () => {
-		setTimeout(() => {
-			setisLoggedIn(false);
-		}, 3000);
+		setUserSession({
+			email: '',
+			role: '',
+			id: '',
+		});
+
+		setToken(null);
+
+		localStorage.removeItem('token');
+		localStorage.removeItem('session');
 	};
 
 	const handleLoginSubmit = async (event) => {
@@ -78,6 +98,8 @@ export const MarketplaceProvider = ({ children }) => {
 		);
 
 		setToken(handleCrypt(token));
+
+		window.location.href = '/dashboard';
 	};
 
 	return (
@@ -90,6 +112,7 @@ export const MarketplaceProvider = ({ children }) => {
 					logIn,
 					handleLoginSubmit,
 					token,
+					getProfile,
 				}}
 			>
 				{children}

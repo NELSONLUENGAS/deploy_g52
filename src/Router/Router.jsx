@@ -14,7 +14,9 @@ import { MarketplaceContext } from '../context/MarketplaceProvider';
 import { handleDecrypt } from '../helpers/helpers';
 
 export const RouterLink = () => {
-	const { userSession, isLoggedIn, token } = useContext(MarketplaceContext);
+	const { userSession, isLoggedIn } = useContext(MarketplaceContext);
+
+	console.log(userSession, isLoggedIn);
 
 	return (
 		<Router>
@@ -37,7 +39,8 @@ export const RouterLink = () => {
 				<Route
 					element={
 						<RuoterGuard
-							isAllowed={userSession.role.includes('admin') && isLoggedIn}
+							isAllowed={userSession.role.includes('admin')}
+							redirectPath="/home"
 						/>
 					}
 				>
