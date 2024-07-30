@@ -11,10 +11,10 @@ import { Settings } from '../View/Settings';
 import { UserProfile } from '../View/UserProfile';
 import { useContext } from 'react';
 import { MarketplaceContext } from '../context/MarketplaceProvider';
+import { handleDecrypt } from '../helpers/helpers';
 
 export const RouterLink = () => {
-	const { userSession, isLoggedIn } = useContext(MarketplaceContext);
-	console.log(userSession);
+	const { userSession, isLoggedIn, token } = useContext(MarketplaceContext);
 
 	return (
 		<Router>

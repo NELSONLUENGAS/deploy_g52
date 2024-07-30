@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react';
 import axios from 'axios';
-import Rabbit from 'crypto-js/rabbit';
+import { decodeToken, handleCrypt, handleDecrypt } from '../helpers/helpers';
+
 const { VITE_SERVER_URL, VITE_SERVER_URL_LOCAL, CRYPTO_SECRET } = import.meta
 	.env;
 
@@ -9,7 +10,7 @@ export const MarketplaceContext = createContext();
 export const MarketplaceProvider = ({ children }) => {
 	const [userSession, setUserSession] = useState(
 		localStorage.getItem('session')
-			? JSON.parse(localStorage.getItem('session'))
+			? JSON.parse(handleDecrypt(localStorage.getItem('session')))
 			: {
 					email: '',
 					role: '',
@@ -53,35 +54,43 @@ export const MarketplaceProvider = ({ children }) => {
 
 		const token = await logIn(userData);
 
-		const tokenPayload = token.split('.')[1];
-
-		const userSesion = JSON.parse(atob(tokenPayload));
+		const userSesion = decodeToken(token);
 
 		setUserSession({
 			id: 1,
 			role: 'admin',
 			email: userSesion.email,
 		});
+
 		setisLoggedIn(true);
 
-		localStorage.setItem('token', token);
+		localStorage.setItem('token', handleCrypt(token));
+
 		localStorage.setItem(
 			'session',
-			JSON.stringify({
-				id: 1,
-				role: 'admin',
-				email: userSesion.email,
-			})
+			handleCrypt(
+				JSON.stringify({
+					id: 1,
+					role: 'admin',
+					email: userSesion.email,
+				})
+			)
 		);
-		setToken(token);
 
-		window.location.href = '/dashboard';
+		setToken(handleCrypt(token));
 	};
 
 	return (
 		<>
 			<MarketplaceContext.Provider
-				value={{ isLoggedIn, userSession, logOut, logIn, handleLoginSubmit }}
+				value={{
+					isLoggedIn,
+					userSession,
+					logOut,
+					logIn,
+					handleLoginSubmit,
+					token,
+				}}
 			>
 				{children}
 			</MarketplaceContext.Provider>
