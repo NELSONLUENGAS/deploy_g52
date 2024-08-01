@@ -26,7 +26,7 @@ export const MarketplaceProvider = ({ children }) => {
 
 	const logIn = async (userData) => {
 		const tokenJson = await axios.post(
-			`${VITE_SERVER_URL_LOCAL}/api/users/login`,
+			`${VITE_SERVER_URL}/api/users/login`,
 			userData
 		);
 		const { token } = tokenJson.data;
@@ -34,14 +34,11 @@ export const MarketplaceProvider = ({ children }) => {
 	};
 
 	const getProfile = async (token) => {
-		const userData = await axios.get(
-			`${VITE_SERVER_URL_LOCAL}/api/users/perfil`,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		);
+		const userData = await axios.get(`${VITE_SERVER_URL}/api/users/perfil`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
 		const { user } = userData.data;
 		return user;
 	};
